@@ -1,0 +1,128 @@
+\documentclass[12pt, letterpaper]{article}
+
+\usepackage[utf8]{inputenc} % Allows standard character encoding
+\usepackage[T1]{fontenc}    % Better font encoding
+
+\usepackage{geometry}
+\geometry{margin=1in} % Sets 1-inch margins on all sides
+
+\usepackage{amsmath}  % Advanced math formatting
+\usepackage{amssymb}  % Math symbols (like R for Reals)
+\usepackage{amsthm}   % Theorem environments
+
+\usepackage{graphicx} % For including images
+\usepackage{hyperref} % For clickable links in PDF
+\usepackage{fancyhdr} % For custom headers/footers
+
+% --- HEADER/FOOTER SETUP ---
+\pagestyle{fancy}
+\fancyhead[L]{CS 461 Notes Jan. 29 2026}
+\fancyhead[R]{\today}
+\setlength{\headheight}{15pt}
+
+% --- TITLE INFO ---
+\title{\textbf{CS 461 Notes Jan. 29 2026}}
+\author{Iris Martinez}
+\date{\today}
+
+% --- DOCUMENT BODY ---
+\begin{document}
+
+\maketitle % Generates the title block based on info above
+\tableofcontents % Automatically generates a table of contents
+\newpage % Starts a new page
+
+\section{Notes}
+
+\subsection{Part 1 - Regression}
+
+\begin{itemize}
+    \item Regression lets us a function to predict a value.
+    \item It is a broad collection of tasks in numerical predictions:
+    \begin{itemize}
+        \item Predicting stocks
+        \item predicting home prices
+        \item predicteding "aggregate outcomes" of economic conditions (such as unemployment rates or sales volume)
+    \end{itemize}
+    \item Essentially, \textbf{regression} refers to regressing \textit{from} the answer to the data in the backwards pass of the algorithm, so that then we can \textit{predict towards} the outcome given only data in a forward pass.
+\end{itemize}
+
+\subsection{Linear regression, formalized}
+
+\begin{itemize}
+    \item In linear regression, we use a matrix X which is made up of i feature vectors.
+    \item Row $X_i$ gives the feature vector for data point i.
+    \item Column $X-j$ gives the vector of all $i$ observations of feature $j$
+    \item The target that we regress against is a given vector $y$, which is the expected output.
+    \item $\hat{y}$ is a vector of the output feature $y$ across all $i$ data points
+    \item This allows us to make this regression equation: $\hat{y} = X\hat{w}$
+    \item We can then find what weight vector $\hat{w}$ will operate on the data $x$ to give the correct prediciton
+    \item This boils down to solving a very large system of equations to find a relative importance for each feature that lets us predict the output value.
+    \item We often include a "bias column" at the beginning of x.
+    \item This is a column of all ones which allows us to skew the entire distribution of the system up or down, in effect giving the output data a "center" for its spread 
+\end{itemize}
+
+\subsection{Solving systems}
+    \begin{itemize}
+        \item Programatically, there are simple library impementations of this. To program this out, we just need to use numpy and some matrix multiplications.
+        \item Mathematically:         
+            \[X\hat{w} = \hat{y}\]
+            \[X^TX\hat{w}= \hat{y}X^T\]
+            \[(X^TX)^{-1} X^TX\hat{w} = \hat{y}X^T(X^TX)^{-1}\]
+            \[\hat{w} = \hat{y}X^T(X^TX)^{-1}\]
+        \item Programatically(numpy):
+            \begin{verbatim}
+
+                X_transpose = X.T
+
+                XTX = X_transpose @ X
+
+                XTX_inv = np.linalg.inv(XTX)
+
+                XTy = X_transpose @ y
+
+                w = XTX_inv @ XTy
+                
+            \end{verbatim}
+    \end{itemize}
+\subsection{Constraining Problems}
+    \begin{itemize}
+        \item A problem may have exist on an extremely high dimensionaly space. In other words, the output of a given thing may be defined by an unlimited number of features and corresponding linear equations.
+        \item The output may be the linear combination of any number of features and their relative importances.
+        \item If we model a problem with \textit{too many} features, we risk overfitting. In other words, giving ourselves an abundance of features that allow us to directly correspond our weights to predict the exact training outputs.
+        \item This is bad, we no longer model the trend, but instead embed into our weights all the necessary information to get out output values we already saw historically.
+        \item Instead, we want to find the line where we just underfit, which lets us boil down the problem into a lower dimensional space that is actually following the trend rather than embedding the data.
+    \end{itemize}
+
+\section{Calculating error (loss)}
+\subsection{Least Squares}
+We can calculate the total loss over all data points n like this:
+\[ Error = 1/2 \sum_{n=1}^N(y_n - \hat{w}^T\hat{x_n})^2\]
+Which is the same as a single step matmul:
+\[ Error = 1/2(X\hat{w}-\hat{y})^T(X\hat{w}-\hat{y})\]
+The gradient of the error is:
+\[X^TX\hat{w}-X^T\hat{y}\]
+The minimum when the gradient is zero:
+\[X^TX\hat{w}=X^T\hat{y}\]
+\subsection{Singular Value Decomposition}
+\begin{itemize}
+    \item We can write any transformation with a series of operations like this $ USV^T $
+    \item Geometrically, we \textit{factor a complex matrix} into a rotation, a scalar multplication, and another rotation.
+    \item This is useful because we can use this to reduce our inference of data from the weights. We can take the data matrix and write it in this form.
+    \item As a result, we can simplify the operations for getting from weights to predicted values. This lets us expand the information embedded into the weights back into predictions.
+    \item This also lets us easily invert the operation, letting us go from data to weights without calculating a difficult inverse.
+    \item Instead, we describe this inverse as the opposite multiplication of the SVD. In other words we can do $V^TSU$ 
+    \item This is called the \textbf{pseudo-inverse}
+    \item This approximates the inverse and, which allows us to avoid overfitting and (somehow) helps us optimize for least squares loss.
+\end{itemize}
+\section{Conclusion}
+    Regression is about making quantitative predictions.
+    Linear regression is compiling things down into a vector of weights.
+\section{Questions}
+\begin{itemize}
+    \item Is my understanding of what SVD is/does/is used for correct?
+    \item Am i understanding the overfitting correctly?
+    \item How does SVD optimize least squares? How does it let you use more features in your model?
+    \item Is my interpretation of the effect of bias terms correct?
+\end{itemize}
+\end{document}
