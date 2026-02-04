@@ -1,0 +1,91 @@
+\documentclass[12pt, letterpaper]{article}
+
+\usepackage[utf8]{inputenc} % Allows standard character encoding
+\usepackage[T1]{fontenc}    % Better font encoding
+
+\usepackage{geometry}
+\geometry{margin=1in} % Sets 1-inch margins on all sides
+
+\usepackage{amsmath}  % Advanced math formatting
+\usepackage{amssymb}  % Math symbols (like R for Reals)
+\usepackage{amsthm}   % Theorem environments
+
+\usepackage{graphicx} % For including images
+\usepackage{hyperref} % For clickable links in PDF
+\usepackage{fancyhdr} % For custom headers/footers
+
+% --- HEADER/FOOTER SETUP ---
+\pagestyle{fancy}
+\fancyhead[L]{CS 461 Lecture Notes for Lecture on 2/2/26}
+\fancyhead[R]{February 3rd, 2026}
+\setlength{\headheight}{15pt}
+
+% --- TITLE INFO ---
+\title{\textbf{CS 461 Notes Feb. 2nd 2026}}
+\author{Iris Martinez}
+\date{\today}
+
+% --- DOCUMENT BODY ---
+\begin{document}
+
+\maketitle % Generates the title block based on info above
+\tableofcontents % Automatically generates a table of contents
+\newpage % Starts a new page
+
+\section{Data and Regressive Model}
+
+\subsection{Mathematical Stability}
+
+\begin{itemize}
+    \item We want our models to be numerically stable. This is because we are working with numerical estimations.
+    \item Our computers do not have infinite precision, so extreme values cause artefacting and innacuracy. 
+    \item One of the reasons for this is because as two vectors grow increasingly close together, their dot product (or what happens when they are multiplied as part of a matrix) goes to infinity. This will lose a lot of data
+    \item This is why whe use \textbf{Singular Value Decomposition}. It allows us to use a more stable computation. 
+    \item Although not discussed in class, it is also logical to assume that normalization will come into play down the line. 
+\end{itemize}
+
+\section{Principles for Regressive Model Design}
+
+We then went over some points on good principles to keep in mind when we design regressive models.
+
+\subsection{Intelligiblity of Models}
+
+\begin{itemize}
+
+    \item When designing a regressive model, there are things we want to understand. 
+    \item One such thing is the meaning of the weights. In a shallow linear  model we aim to be able to observe what the weights correspond to and mean in practice.
+    \item Another area that we must spend much time on is thorougly analyzing our data.
+    \item Observations on trends, significant and insignificant variables, etc can be instrumental in model design and in making sure our model accurantly represents the data.
+    \item We do not predict before knowing what we are working with. This constitutes on some degree irresponsibility intellectually, since if we do not understand our data, we cannot vet our predictions.  
+\end{itemize}
+\subsection{Datasheets for Datasets: Responsible Data Production and Consumption}
+\begin{itemize}
+    \item The professor quotes the following paper on guidance for providing context and transparency to datasets one may create and share with the academic community.
+    \item The paper also gets into why it is important to understand these various aspects of data that we consume.
+    \item Important ideas that came up during this section were: 
+    \item \begin{itemize}
+        \item We should understand the various biases that are implicit in data that we use
+        \item We should beware of target/contruct mismatch. This means being extremely careful about what data points we use as proxies for the "real thing" we are trying to predict, model, or understand. Our assumptions may lead us astray and cause us to rely on baseless correlations.
+        \item Another pitfall is distribution shift. This occurs when the distribution that we study to train our model is not representative of the real world distribution. 
+        \item All of these observations live very close to moral issues of responsibility and the power of predictive models.
+        \item As data scientists, it is our duty to have exceptional moral discernment in deciding even what \textbf{should}
+        be modeled in addition to ensuring that our models do not misrepresent people, perpetuate social biases, or at worst even actively harm people or groups of people.
+        \end{itemize} 
+        
+\end{itemize}
+\section{Questions and areas for exploration}
+\begin{itemize}
+\item How does the algebra change between our simple linear models and more elaborate ones, such as exponential or quadratic ones?
+\item How can we interpret more complex models, such as ones that are "deeper" (have more linear or nonlinear layers)?
+\item How do we reassure ourselves of the safety of deep learning models given that they are by nature not easily intelligible by humans?
+\item What are the impacts of data created by our modern day generative models on both new generative model creation and the accuracy of regressive models that may be contaminted with "genAI" data?
+\end{itemize}
+\subsection{Papers Reccomended by Professor Stone}
+\begin{itemize}
+    \item Gebru et. al., 2018 \href{https://arxiv.org/pdf/1803.09010}{"Datasheets for Datasets"} 
+    \item Shumailov et. al., 2023 \href{https://arxiv.org/pdf/2305.17493}{"The Curse of Recursion: Training on Generated Data Makes Models Forget"}
+    \item Camp et. al., 2025 \href{https://www.sciencedirect.com/science/article/pii/S0099133325000618?via%3Dihub}{The citation catastrophe: Propagation of AI-generated counterfeit citations in scholarship}
+    \item Wang et. al, 2023 \href{https://predictive-optimization.cs.princeton.edu/}{Against Predictive Optimization:
+On the Legitimacy of Decision-Making Algorithms that Optimize Predictive Accuracy}
+\end{itemize}
+\end{document}
