@@ -1,3 +1,3 @@
-main = do
-    putStrLn "Hi, mom!"
-    putStrLn ("Please look at the best number ever: " ++ show 39)
+data Cards = A | Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | J | Q | K
+    deriving(Show, Enum, Bounded, Read)
+
