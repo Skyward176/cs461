@@ -63,6 +63,10 @@ onePScore hand = let x = foldr (\a b -> getCardScore a + b) 0 hand in if x <=11 
 score :: GameState -> (Int, Int)
 score state = (onePScore(playerCards state), onePScore(dealerCards state))
 
+gameloop :: IO Char -> GameState -> GameState
+
+gameloop x state= do
+    let input = 
 main :: IO ()
 main = do
     gen <- newStdGen
@@ -71,6 +75,3 @@ main = do
     print(playerCards currentState)
     print(deck currentState)
     print(score currentState)
-    let nextState = hit currentState 0 
-    print(playerCards nextState)
-    print(score nextState)
